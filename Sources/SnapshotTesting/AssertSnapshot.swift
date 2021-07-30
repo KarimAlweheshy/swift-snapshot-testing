@@ -52,6 +52,45 @@ public func assertSnapshot<Value, Format>(
   XCTFail(message, file: file, line: line)
 }
 
+/// Asserts that a given value matches a reference on disk.
+///
+/// - Parameters:
+///   - value: A value to compare against a reference.
+///   - snapshotting: A strategy for serializing, deserializing, and comparing values.
+///   - name: An optional description of the snapshot.
+///   - recording: Whether or not to record a new reference.
+///   - timeout: The amount of time a snapshot must be generated in.
+///   - fileUrl: The path where base snapshots should be found or recorded
+///   - file: The file in which failure occurred. Defaults to the file name of the test case in which this function was called.
+///   - testName: The name of the test in which failure occurred. Defaults to the function name of the test case in which this function was called.
+///   - line: The line number on which failure occurred. Defaults to the line number on which this function was called.
+public func assertSnapshot<Value, Format>(
+  matching value: @autoclosure () throws -> Value,
+  as snapshotting: Snapshotting<Value, Format>,
+  named name: String? = nil,
+  record recording: Bool = false,
+  timeout: TimeInterval = 5,
+  fileUrl: URL,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+  ) {
+
+  let failure = verifySnapshot(
+    matching: try value(),
+    as: snapshotting,
+    named: name,
+    record: recording,
+    timeout: timeout,
+    fileUrl: fileUrl,
+    file: file,
+    testName: testName,
+    line: line
+  )
+  guard let message = failure else { return }
+  XCTFail(message, file: file, line: line)
+}
+
 /// Asserts that a given value matches references on disk.
 ///
 /// - Parameters:
