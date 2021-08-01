@@ -83,7 +83,6 @@ public func assertSnapshot<Value, Format>(
     record: recording,
     timeout: timeout,
     fileUrl: fileUrl,
-    file: file,
     testName: testName,
     line: line
   )
@@ -219,7 +218,6 @@ public func verifySnapshot<Value, Format>(
         snapshotDirectory: snapshotDirectory,
         timeout: timeout,
         fileUrl: URL(fileURLWithPath: "\(file)", isDirectory: false),
-        file: file,
         testName: testName,
         line: line
     )
@@ -276,7 +274,6 @@ public func verifySnapshot<Value, Format>(
   snapshotDirectory: String? = nil,
   timeout: TimeInterval = 5,
   fileUrl: URL,
-  file: StaticString = #file,
   testName: String = #function,
   line: UInt = #line
 ) -> String? {
